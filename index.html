@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>คำนวณค่าโดยสารแท็กซี่</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+            background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTUauaVa5jK2rTbvubHxoc3F3eP2iJn8x7uQw&s') no-repeat center center fixed; /* Taxi-themed background image */
+            background-size: cover; /* Ensure the image covers the entire screen */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #212121; /* Dark text for contrast */
+        }
+        #taxi-calculator {
+            background-color: rgba(255, 255, 255, 0.95); /* White with slight transparency */
+            padding: 30px;
+            border-radius: 20px;
+            text-align: center;
+            width: 400px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        #taxi-image {
+            position: absolute;
+            top: -70px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: auto;
+        }
+        h2 {
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: #f57f17; /* Yellow-orange for title */
+            text-shadow: 2px 2px 4px #000; /* Black shadow for contrast */
+        }
+        input {
+            width: 90%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #f57f17; /* Darker yellow for button */
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #e65100; /* Even darker orange on hover */
+        }
+        p {
+            font-size: 20px;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #757575;
+        }
+        .description {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <section id="taxi-calculator">
+            <img id="taxi-image" src="taxi-icon.png" alt="Taxi Icon"> <!-- Replace with the actual path to your image -->
+            <h2>หารค่าแท็กซี่</h2>
+            <p class="description">กรอกระยะทางและเวลาเพื่อคำนวณค่าโดยสารแท็กซี่</p>
+            <label for="distance">ระยะทาง (กิโลเมตร):</label>
+            <input type="number" id="distance" min="0" step="0.1" placeholder="กรอกระยะทาง">
+            <p class="description">ระยะทางที่เดินทาง (เช่น 5.5 กิโลเมตร)</p>
+            <label for="time">เวลา (นาที):</label>
+            <input type="number" id="time" min="0" step="1" placeholder="กรอกเวลา">
+            <p class="description">เวลาที่ใช้ในการเดินทาง (เช่น 15 นาที)</p>
+            <button onclick="calculateFare()">คำนวณ</button>
+            <p id="fare-result"></p>
+            <footer>&copy; 2023 Taxi Fare Calculator</footer>
+        </section>
+    </main>
+    <script>
+        function calculateFare() {
+            const baseFare = 35;
+            const perKmRate = 2;
+            const distance = parseFloat(document.getElementById('distance').value);
+            const time = parseFloat(document.getElementById('time').value);
+
+            if (isNaN(distance) || distance < 0 || isNaN(time) || time < 0) {
+                document.getElementById('fare-result').textContent = "กรุณากรอกระยะทางและเวลาที่ถูกต้อง";
+                return;
+            }
+
+            const fare = baseFare + (distance > 1 ? (distance - 1) * perKmRate : 0);
+            const farePerMinute = fare / (time > 0 ? time : 1); // Avoid division by zero
+            document.getElementById('fare-result').textContent = `ค่าโดยสาร: ${fare.toFixed(2)} บาท (เฉลี่ย ${farePerMinute.toFixed(2)} บาท/นาที)`;
+        }
+    </script>
+</body>
+</html>
